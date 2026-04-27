@@ -3,8 +3,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT = path.resolve(__dirname, '.');
-const OUT_PATH = path.join(ROOT, 'startups.json');
+const ROOT = path.resolve(__dirname, '..');
+const OUT_PATH = path.join(ROOT, 'data', 'startups.json');
 
 if (!process.env.TRUST_MRR_API_KEY) {
   const envPath = path.join(ROOT, '.env.local');
@@ -83,6 +83,11 @@ async function run() {
     if (hasMore) {
       await new Promise((r) => setTimeout(r, RATE_LIMIT_DELAY_MS));
     }
+  }
+  
+  const dataDir = path.join(ROOT, 'data');
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
   }
 
   const output = {
